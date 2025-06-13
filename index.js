@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { json } from 'express';
 import {create} from 'express-handlebars';
 import AuthRoutes from './routes/auth.js';
 import ProductRoutes from './routes/products.js';
@@ -13,9 +13,12 @@ const hbs = create({
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', './views');
+app.use(express.urlencoded({ extended: true }));
+
 
 app.use(AuthRoutes);
 app.use(ProductRoutes);
+ 
 
 const PORT = process.env.PORT || 4100;
 app.listen(PORT, () => {
