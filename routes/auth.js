@@ -15,9 +15,15 @@ router.get('/register',(req,res)=>{
         isRegister: true
     });
 })
-router.post('/login',(req,res)=>{
-    console.log(req.body);
-    
+router.post('/login',async (req,res)=>{
+    const existUser = await User.findOne({email: req.body.email});
+    if (!existUser) {
+        return res.status(400).send('Invalid email or password');
+    }
+    const isMatch = await bcrypt.compare(req.body.password, existUser.password);
+    if (!isMatch) {
+        return res.status(400).send('Invalid email or password');
+    }
     res.redirect('/')
 })
 router.post('/register', async(req,res)=>{
