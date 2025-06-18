@@ -1,5 +1,13 @@
 <div class ='w-50 mx-auto mt-5'>
     <p class='fs-1 text-center'>Login</p>
+    {{#if loginError}}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>All fields are required</strong> You should check in on some of those fields below.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  {{loginError}}
+  </div>
+    
+    {{/if}}
     <form action ="/login" method="POST" class="p-3">
   <div class="mb-3">
     <label for="exampleInputEmail1"   class="form-label">Email address</label>
