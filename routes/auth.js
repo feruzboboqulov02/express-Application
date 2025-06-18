@@ -30,7 +30,8 @@ router.get('/register',(req,res)=>{
 })
 
 router.get('/logout',(req,res)=>{
-    res.clearCookie('token')
+res.clearCookie('token', {httpOnly:true,secure:true,sameSite:'strict'});
+req.flash('logoutMessage', 'You have successfully logged out');
     res.redirect('/');
 })
 router.post('/login',async (req,res)=>{
