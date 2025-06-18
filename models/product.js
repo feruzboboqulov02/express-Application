@@ -5,7 +5,7 @@ const ProductSchema = new Schema({
     description: {type: String, required: true},
     image: {type: String, required: true},
     price: {type: Number, required: true},
-},timestamps: true);
+},{timestamps: true});
 
 const Product = model('Product', ProductSchema);
 export default Product;
