@@ -3,7 +3,8 @@ const router= Router();
 
 router.get('/',(req,res)=>{
     res.render('index',{
-        title: 'Boom shop | Balu'
+        title: 'Boom shop | Balu',
+        token:true,
     });
 })
 router.get('/add',(req,res)=>{
