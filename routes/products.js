@@ -1,6 +1,8 @@
 import {Router} from 'express';
+import authMidlleware from '../middlewares/auth.js';
+import userMiddleware from '../middlewares/user.js';
 import Product from '../models/product.js';
-const router= Router();
+ const router= Router();
 
 router.get('/',(req,res)=>{
     res.render('index',{
@@ -8,30 +10,34 @@ router.get('/',(req,res)=>{
         token:true,
     });
 })
-router.get('/add',(req,res)=>{
+router.get('/add',authMidlleware,(req,res)=>{
     res.render('add',{
         title: 'Add Product',
-        isAdd: true
+        isAdd: true,
+        errorAddProducts: req.flash('errorAddProducts'),
     });
 })
 router.get('/products',(req,res)=>{
     res.render('products',{
         title: 'Products | Balu',
-        isProducts: true
+        isProducts: true,
+        
     });
 })
-router.post('/add-products',async(req,res,)=>{
-    console.log(req.body);
-    
+router.post('/add-products', userMiddleware, async(req,res,)=>{
     const {title, description, image, price} = req.body;
-    if(!title || !description || !image || !price){
-        return res.status(400).send('All fields are required');
+    if (!title || !description || !image || !price) {
+        req.flash('errorAddProducts', 'All fields are required');
+        res.redirect('/add');
+        return;
     }
+    console.log(req.userID);
+    
     const products = await Product.create(req.body);
     console.log(products);
-    
     res.redirect('/');
-    
+
+
 })
 
 export default router;
