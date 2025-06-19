@@ -2,8 +2,7 @@ import {Router} from 'express';
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import { generateJWTToken } from '../services/token.js';
-import { re } from 'mathjs';
-
+ 
 const router= Router();
 
 router.get('/login',(req,res)=>{
@@ -48,7 +47,7 @@ router.post('/login',async (req,res)=>{
         return;
     }
     const token = generateJWTToken(existUser._id);
-    res.cookie('token', token, {httpOnly:true,secure:true,sameSite:'strict'});
+    res.cookie('token', token, {httpOnly:true,secure:true});
     const isMatch = await bcrypt.compare(password, existUser.password);
     if (!isMatch) {
         req.flash('loginError', 'Password is incorrect');
@@ -78,11 +77,7 @@ router.post('/register', async(req,res)=>{
     }
     const user = await User.create(userData);
     const token = generateJWTToken(user._id);
-    res.cookie('token', token, {httpOnly:true,secure:true,sameSite:'strict'});
-    console.log(token);
-    
-
-    
+    res.cookie('token', token, {httpOnly:true,secure:true});
     res.redirect('/')
 })
 
