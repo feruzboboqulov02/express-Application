@@ -9,8 +9,8 @@ router.get('/',async (req,res)=>{
     
     res.render('index',{
         title: 'Boom shop | Balu',
-        
-        products: products,
+        products: products.reverse(),
+        userID: req.userID ? req.userID.toString() : null,
     });
 })
 router.get('/add',authMidlleware,(req,res)=>{
@@ -20,11 +20,15 @@ router.get('/add',authMidlleware,(req,res)=>{
         errorAddProducts: req.flash('errorAddProducts'),
     });
 })
-router.get('/products',(req,res)=>{
+router.get('/products',async (req,res)=>{
+    const user= req.userID ? req.userID.toString() : null
+    const myProducts= await Product.find({user: user}).lean();
+    console.log(myProducts);
+    
     res.render('products',{
         title: 'Products | Balu',
         isProducts: true,
-        
+        myProducts: myProducts,
     });
 })
 router.post('/add-products', userMiddleware, async(req,res,)=>{

@@ -5,9 +5,10 @@ import * as dotenv from 'dotenv';
 import flash from 'connect-flash';
 import session from 'express-session';
 import varMiddleware from './middlewares/var.js';
+import userMidlleware from './middlewares/user.js';
 import cookieParser from 'cookie-parser';
 
-
+import hbsHelper from './utils/index.js';
 import AuthRoutes from './routes/auth.js';
 import ProductRoutes from './routes/products.js';
 
@@ -20,6 +21,7 @@ const app = express();
 const hbs = create({
     defaultLayout: 'main',
     extname: '.hbs',
+    helpers:hbsHelper
 })
 
 app.engine('hbs', hbs.engine);
@@ -32,6 +34,7 @@ app.use(cookieParser());
 app.use(flash());
 app.use(session({secret: "Balu",resave:false,saveUninitialized:false}));
 app.use(varMiddleware);
+app.use(userMidlleware);
 
 
 app.use(AuthRoutes);
