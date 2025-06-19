@@ -4,10 +4,13 @@ import userMiddleware from '../middlewares/user.js';
 import Product from '../models/product.js';
  const router= Router();
 
-router.get('/',(req,res)=>{
+router.get('/',async (req,res)=>{
+    const products = await Product.find().lean()
+    
     res.render('index',{
         title: 'Boom shop | Balu',
-        token:true,
+        
+        products: products,
     });
 })
 router.get('/add',authMidlleware,(req,res)=>{
